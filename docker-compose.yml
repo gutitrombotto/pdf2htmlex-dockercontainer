@@ -1,11 +1,10 @@
 version: '3'
 
 networks:
-  frontend:
-    driver: ${NETWORKS_DRIVER}
   backend:
     driver: ${NETWORKS_DRIVER}
 
+services:
 ### Pdf2HtmlEx ################################################
     pdf2htmlex:
       build:
@@ -13,7 +12,7 @@ networks:
         args:
           - WEBSERVICE_PATH=${PDF2HTMLEX_WEBSERVICE_PATH}
       volumes:
-        - ${APP_CODE_PATH_HOST}/filadd/storage/app/:/pdf
+        - "${PDF2HTMLEX_VOLUME_DIR}:/pdf"
         - ./pdf2htmlex/webservice/:/webservice/
         - ./pdf2htmlex/init.sh:/init.sh
       ports:

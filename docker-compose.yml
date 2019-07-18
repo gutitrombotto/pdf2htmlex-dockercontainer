@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  frontend:
+    driver: ${NETWORKS_DRIVER}
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+### Pdf2HtmlEx ################################################
+    pdf2htmlex:
+      build:
+        context: ./pdf2htmlex
+        args:
+          - WEBSERVICE_PATH=${PDF2HTMLEX_WEBSERVICE_PATH}
+      volumes:
+        - ${APP_CODE_PATH_HOST}/filadd/storage/app/:/pdf
+        - ./pdf2htmlex/webservice/:/webservice/
+        - ./pdf2htmlex/init.sh:/init.sh
+      ports:
+        - "${PDF2HTMLEX_PORT}:8085"
+      tty: true
+      networks:
+        - backend

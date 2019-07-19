@@ -10,14 +10,16 @@ RUN echo "**** install Python ****" && \
     pip3 install --no-cache --upgrade pip setuptools wheel && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
 
+COPY ./webservice/ /webservice/
 
 ###########################################################################
 # WEBSERVICE START:
 # It's a python script wich will start a web service where
 # we will send the filename and the conversion options.
 ###########################################################################
+RUN echo "**** installing webservice requirements ****" && \
+	pip3 install -r /webservice/requirements.txt
 
-
-CMD ["sh", "/init.sh"]
+CMD ["python3", "/webservice/webservice.py"]
 
 EXPOSE 8085

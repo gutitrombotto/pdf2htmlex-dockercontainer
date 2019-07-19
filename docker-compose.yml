@@ -14,7 +14,7 @@ services:
       volumes:
         - "${PDF2HTMLEX_VOLUME_DIR}:/pdf"
         - ./pdf2htmlex/webservice/:/webservice/
-        - ./pdf2htmlex/init.sh:/init.sh
+        #- ./pdf2htmlex/init.sh:/init.sh
       ports:
         - "${PDF2HTMLEX_PORT}:8085"
       tty: true

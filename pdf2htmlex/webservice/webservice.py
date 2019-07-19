@@ -16,17 +16,11 @@ class PdfToHtmlEx(web.RequestHandler):
 
         filename = post_body["filename"]
         options = post_body["options"]
-        command = generate_pdfToHtmlExCommand(filename, options)
-        print(command)
 
         try:
+            command = generate_pdfToHtmlExCommand(filename, options)
+            print(command)
             execute_pdf_to_html_conversion(command)
-            response = {
-                'success': 'true',
-            }
-
-            response = json.dumps(response)
-            self.write(response)
         except Exception as e:
             logging.error(traceback.format_exc())
             error_message = traceback.format_exc()
@@ -37,19 +31,29 @@ class PdfToHtmlEx(web.RequestHandler):
 
             response = json.dumps(response)
             self.write(response)
+        else:
+            response = {
+                'success': 'true',
+            }
+
+            response = json.dumps(response)
+            self.write(response)
 
 
 def execute_pdf_to_html_conversion ( command ):
 
     command = shlex.split(command)
-    MyOut = subprocess.Popen(command,
+    proc = subprocess.Popen(command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT)
-    stdout,stderr = MyOut.communicate()
-
+    try:
+        outs, errs = proc.communicate(timeout=15)
+    except TimeoutExpired:
+        proc.kill()
+        outs, errs = proc.communicate()
 
 def generate_pdfToHtmlExCommand(filename, options):
-    
+    filename = filename.replace(" ", "\\ ")
     initial_command = 'pdf2htmlEX'
     
     initial_command += " --embed-font " + str(options["embed_font"])
@@ -78,6 +82,7 @@ def generate_pdfToHtmlExCommand(filename, options):
     else:
         filename_html_path  = os.path.splitext(filename)[0] + ".html"
         output_filename_command += filename_html_path
+
 
     command = initial_command + " /pdf/" + filename + output_filename_command;
 

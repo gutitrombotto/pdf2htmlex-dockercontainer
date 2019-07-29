@@ -41,6 +41,8 @@ So you should make a POST Http request with the filename and the parameters for 
  }
 
 ```
+ - After a success conversion, the converted file will be stored in the shared folder 
+
 
 ### Things to keep in mind
 
@@ -54,6 +56,8 @@ Some features to add are:
 
  - More Conversion options on the Post request. You be changed on webservice.py file.
  - Exceptions catching. Error responses.
+ - Make the container initialization more parameterizable.
+
 
 
 ## License

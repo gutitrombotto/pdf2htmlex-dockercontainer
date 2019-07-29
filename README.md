@@ -25,7 +25,7 @@ So you should make a POST Http request with the filename and the parameters for 
 ```json
 {
 	"Content-type": "application/json"
-	}
+}
 ```
  - On the Request body, you can set the following options: 
 ```json
